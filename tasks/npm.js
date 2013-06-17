@@ -112,4 +112,10 @@ module.exports = function(grunt) {
       });
     });
   });
+
+
+  // aliases
+  grunt.registerTask('contributors', 'npm-contributors');
+  grunt.registerTask('show', 'npm-show');
+  grunt.registerTask('publish', 'npm-publish');
 };

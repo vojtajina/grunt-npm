@@ -15,10 +15,10 @@ Add this line to your project's `Gruntfile.js`:
 
 ## Tasks
 
-### grunt npm-show
+### grunt npm-show (also aliased as show)
 Show all the files that would be published to NPM. This is useful if you wanna make sure you are not publishing files you don't want to...
 
-### grunt npm-publish
+### grunt npm-publish (also aliased as publish)
 
 #### Configuration
 ```js
@@ -34,7 +34,7 @@ Show all the files that would be published to NPM. This is useful if you wanna m
 }
 ```
 
-### grunt npm-contributors
+### grunt npm-contributors (also aliased as contributors)
 Update contributors in `package.json` - all developers who commited to the repository, sorted by number of commits. A `.mailmap` file can be used to map multiple emails to a single person.
 
 #### Configuration
