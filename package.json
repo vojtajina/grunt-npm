@@ -1,6 +1,6 @@
 {
   "name": "grunt-npm",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A set of helpers for dealing with NPM from Grunt.",
   "bugs": {
     "url": "https://github.com/vojtajina/grunt-npm/issues"
