@@ -1,0 +1,22 @@
+{
+  "name": "grunt-npm",
+  "version": "0.0.0",
+  "description": "A set of helpers for dealing with NPM from Grunt.",
+  "bugs": {
+    "url": "https://github.com/vojtajina/grunt-npm/issues"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/vojtajina/grunt-npm.git"
+  },
+  "author": "Vojta Jína <vojta.jina@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-bump": "0.0.3"
+  }
+}
