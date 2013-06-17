@@ -33,3 +33,17 @@ Show all the files that would be published to NPM. This is useful if you wanna m
   }
 }
 ```
+
+### grunt npm-contributors
+Update contributors in `package.json` - all developers who commited to the repository, sorted by number of commits. A `.mailmap` file can be used to map multiple emails to a single person.
+
+#### Configuration
+```js
+'npm-contributors': {
+  options: {
+    file: 'package.json',
+    commit: true,
+    commitMessage: 'Update contributors'
+  }
+}
+```

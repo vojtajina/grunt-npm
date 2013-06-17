@@ -73,4 +73,43 @@ module.exports = function(grunt) {
 
     next();
   });
+
+
+  /**
+   * Generate contributors, all developers who contributed, sorted by number of commits.
+   */
+  grunt.registerTask('npm-contributors', 'Update contributors in package.json', function() {
+    var done = this.async();
+    var opts = this.options({
+      file: 'package.json',
+      commit: true,
+      commitMessage: 'Update contributors'
+    });
+
+    exec('git log --pretty=short | git shortlog -nse', function(err, stdout) {
+      var pkg = grunt.file.readJSON(opts.file);
+
+      pkg.contributors = stdout.toString().split('\n').slice(1, -1).map(function(line) {
+        return line.replace(/^[\W\d]+/, '');
+      });
+
+      grunt.file.write(opts.file, JSON.stringify(pkg, null, '  ') + '\n');
+
+      exec('git status -s ' + opts.file, function(err, stdout) {
+        if (!stdout) {
+          grunt.log.ok('The contributors list is already up to date.');
+          return done();
+        }
+
+        exec('git commit ' + opts.file + ' -m "' + opts.commitMessage + '"', function(err, stdout, stderr) {
+          if (err) {
+            grunt.log.error('Cannot commit contributors changes:\n  ' + stderr);
+          } else {
+            grunt.log.ok('The contributors list has been updated.');
+          }
+          done();
+        });
+      });
+    });
+  });
 };
