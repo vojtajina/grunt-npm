@@ -40,10 +40,25 @@ Update contributors in `package.json` - all developers who commited to the repos
 #### Configuration
 ```js
 'npm-contributors': {
+options: {
+file: 'package.json',
+commit: true,
+commitMessage: 'Update contributors'
+}
+}
+```
+
+### grunt npm-checkBranch (also aliased as checkBranch)
+Enforce the use of a particular local branch, or log an error if the user's branch is different than expected.
+
+Defaults:
+
+#### Configuration
+```js
+'npm-checkBranch': {
   options: {
-    file: 'package.json',
-    commit: true,
-    commitMessage: 'Update contributors'
+    branch: "master",
+      failOut: true
   }
 }
 ```
