@@ -113,9 +113,38 @@ module.exports = function(grunt) {
     });
   });
 
+  /**
+   * Confirm the user is on a specified branch, exiting with an error if not
+   */
+  grunt.registerTask('npm-checkBranch', 'Check if the user is on a specified branch', function() {
+    var done = this.async();
+    var opts = this.options({
+      branch: "master",
+      failOut: true
+    });
+
+    exec('git rev-parse --abbrev-ref HEAD', function(err, stdout) {
+      if (err) {
+        return grunt.fatal(err.message.replace(/\n$/, '.'));
+      }
+
+      if (opts.branch == stdout.split('\n')[0]) {
+        grunt.log.ok('Valid branch detected.');
+        return done();
+      }
+
+      if (opts.failOut) {
+        return grunt.fatal('You are on an incorrect branch! Checkout to ' + opts.branch + ' and re-run your grunt task.');
+      }
+
+      grunt.log.error('You are on an incorrect branch! (' + opts.branch + ' expected)');
+      done();
+    });
+  });
 
   // aliases
   grunt.registerTask('contributors', 'npm-contributors');
   grunt.registerTask('show', 'npm-show');
   grunt.registerTask('publish', 'npm-publish');
+  grunt.registerTask('checkBranch', 'npm-checkBranch');
 };
