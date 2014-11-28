@@ -1,6 +1,7 @@
 module.exports = function(grunt) {
 
   var exec = require('child_process').exec;
+  var _ = grunt.util._;
 
 
   /**
@@ -78,20 +79,41 @@ module.exports = function(grunt) {
   /**
    * Generate contributors, all developers who contributed, sorted by number of commits.
    */
-  grunt.registerTask('npm-contributors', 'Update contributors in package.json', function() {
+  grunt.registerMultiTask('npm-contributors', 'Update contributors in package.json', function() {
     var done = this.async();
     var opts = this.options({
       file: 'package.json',
       commit: true,
-      commitMessage: 'Update contributors'
+      commitMessage: 'Update contributors',
+      as: 'contributors',
+      filter: function(contributors) {
+        return contributors.slice(1);
+      }
     });
+
+    if (!_.isFunction(opts.filter)) {
+      opts.filter = function(contributors) { return contributors; };
+    }
 
     exec('git log --pretty=short | git shortlog -nse', function(err, stdout) {
       var pkg = grunt.file.readJSON(opts.file);
 
-      pkg.contributors = stdout.toString().split('\n').slice(1, -1).map(function(line) {
-        return line.replace(/^[\W\d]+/, '');
+      var contributors = stdout.toString().split('\n').filter(function(line) {
+        return line.length;
+      }).map(function(line) {
+        var lineNumberMatcher = /^[\W\d]+/;
+        return {
+          name: line.replace(lineNumberMatcher, ''),
+          commitCount: parseInt(line.match(lineNumberMatcher)[0], 10)
+        };
       });
+
+      pkg[opts.as] = opts.filter(contributors);
+      if (_.isArray(pkg[opts.as])) {
+        pkg[opts.as] = pkg[opts.as].map(function(contributor) {
+          return contributor.name;
+        });
+      }
 
       grunt.file.write(opts.file, JSON.stringify(pkg, null, '  ') + '\n');
 
