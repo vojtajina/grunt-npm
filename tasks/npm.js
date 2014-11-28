@@ -101,10 +101,19 @@ module.exports = function(grunt) {
       var contributors = stdout.toString().split('\n').filter(function(line) {
         return line.length;
       }).map(function(line) {
-        return line.replace(/^[\W\d]+/, '');
+        var lineNumberMatcher = /^[\W\d]+/;
+        return {
+          name: line.replace(lineNumberMatcher, ''),
+          commitCount: parseInt(line.match(lineNumberMatcher)[0], 10)
+        };
       });
 
       pkg[opts.as] = opts.filter(contributors);
+      if (_.isArray(pkg[opts.as])) {
+        pkg[opts.as] = pkg[opts.as].map(function(contributor) {
+          return contributor.name;
+        });
+      }
 
       grunt.file.write(opts.file, JSON.stringify(pkg, null, '  ') + '\n');
 
