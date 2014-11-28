@@ -1,6 +1,7 @@
 module.exports = function(grunt) {
 
   var exec = require('child_process').exec;
+  var _ = grunt.util._;
 
 
   /**
@@ -84,15 +85,26 @@ module.exports = function(grunt) {
       file: 'package.json',
       commit: true,
       commitMessage: 'Update contributors',
-      as: 'contributors'
+      as: 'contributors',
+      filter: function(contributors) {
+        return contributors.slice(1);
+      }
     });
+
+    if (!_.isFunction(opts.filter)) {
+      opts.filter = function(contributors) { return contributors; };
+    }
 
     exec('git log --pretty=short | git shortlog -nse', function(err, stdout) {
       var pkg = grunt.file.readJSON(opts.file);
 
-      pkg[opts.as] = stdout.toString().split('\n').slice(1, -1).map(function(line) {
+      var contributors = stdout.toString().split('\n').filter(function(line) {
+        return line.length;
+      }).map(function(line) {
         return line.replace(/^[\W\d]+/, '');
       });
+
+      pkg[opts.as] = opts.filter(contributors);
 
       grunt.file.write(opts.file, JSON.stringify(pkg, null, '  ') + '\n');
 
