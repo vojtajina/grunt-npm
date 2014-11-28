@@ -95,6 +95,11 @@ module.exports = function(grunt) {
 
       grunt.file.write(opts.file, JSON.stringify(pkg, null, '  ') + '\n');
 
+      if (!opts.commit) {
+        grunt.log.ok('The contributors list has been updated.');
+        return done();
+      }
+
       exec('git status -s ' + opts.file, function(err, stdout) {
         if (!stdout) {
           grunt.log.ok('The contributors list is already up to date.');
@@ -105,7 +110,7 @@ module.exports = function(grunt) {
           if (err) {
             grunt.log.error('Cannot commit contributors changes:\n  ' + stderr);
           } else {
-            grunt.log.ok('The contributors list has been updated.');
+            grunt.log.ok('The contributors list has been updated and commited.');
           }
           done();
         });
