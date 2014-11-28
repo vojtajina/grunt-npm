@@ -89,7 +89,9 @@ module.exports = function(grunt) {
     exec('git log --pretty=short | git shortlog -nse', function(err, stdout) {
       var pkg = grunt.file.readJSON(opts.file);
 
-      pkg.contributors = stdout.toString().split('\n').slice(1, -1).map(function(line) {
+      pkg.contributors = stdout.toString().split('\n').slice(1, -1).filter(function(line) {
+        return line.length;
+      }).map(function(line) {
         return line.replace(/^[\W\d]+/, '');
       });
 
