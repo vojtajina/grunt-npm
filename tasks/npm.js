@@ -83,13 +83,14 @@ module.exports = function(grunt) {
     var opts = this.options({
       file: 'package.json',
       commit: true,
-      commitMessage: 'Update contributors'
+      commitMessage: 'Update contributors',
+      as: 'contributors'
     });
 
     exec('git log --pretty=short | git shortlog -nse', function(err, stdout) {
       var pkg = grunt.file.readJSON(opts.file);
 
-      pkg.contributors = stdout.toString().split('\n').slice(1, -1).map(function(line) {
+      pkg[opts.as] = stdout.toString().split('\n').slice(1, -1).map(function(line) {
         return line.replace(/^[\W\d]+/, '');
       });
 

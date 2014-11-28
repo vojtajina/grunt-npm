@@ -43,7 +43,8 @@ Update contributors in `package.json` - all developers who commited to the repos
   options: {
     file: 'package.json',
     commit: true,
-    commitMessage: 'Update contributors'
+    commitMessage: 'Update contributors',
+    as: 'contributors'
   }
 }
 ```
