@@ -79,7 +79,7 @@ module.exports = function(grunt) {
   /**
    * Generate contributors, all developers who contributed, sorted by number of commits.
    */
-  grunt.registerTask('npm-contributors', 'Update contributors in package.json', function() {
+  grunt.registerMultiTask('npm-contributors', 'Update contributors in package.json', function() {
     var done = this.async();
     var opts = this.options({
       file: 'package.json',
