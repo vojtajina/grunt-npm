@@ -101,14 +101,16 @@ module.exports = function(grunt) {
           return done();
         }
 
-        exec('git commit ' + opts.file + ' -m "' + opts.commitMessage + '"', function(err, stdout, stderr) {
-          if (err) {
-            grunt.log.error('Cannot commit contributors changes:\n  ' + stderr);
-          } else {
-            grunt.log.ok('The contributors list has been updated.');
-          }
-          done();
-        });
+        if (opts.commit) {
+          exec('git commit ' + opts.file + ' -m "' + opts.commitMessage + '"', function(err, stdout, stderr) {
+            if (err) {
+              grunt.log.error('Cannot commit contributors changes:\n  ' + stderr);
+            } else {
+              grunt.log.ok('The contributors list has been updated.');
+            }
+            done();
+          });
+        }
       });
     });
   });
